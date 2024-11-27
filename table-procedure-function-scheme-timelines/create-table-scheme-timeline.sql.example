@@ -1,0 +1,31 @@
+
+CREATE TABLE schemes (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR2(10) NOT NULL
+);
+
+CREATE TABLE timelines (
+    id CHAR(36) PRIMARY KEY,
+    scheme_id CHAR(36) NOT NULL,
+    year VARCHAR2(4) NOT NULL,
+    status VARCHAR2(10) CHECK (status IN ('AKTIF', 'NON-AKTIF')) NOT NULL,
+    CONSTRAINT fk_timelines_scheme FOREIGN KEY (scheme_id) REFERENCES schemes (id)
+);
+
+CREATE TABLE scheme_types (
+    id CHAR(36) PRIMARY KEY,
+    scheme_id CHAR(36) NOT NULL,
+    name VARCHAR2(100) NOT NULL,
+    CONSTRAINT fk_scheme_types_scheme FOREIGN KEY (scheme_id) REFERENCES schemes (id)
+);
+
+CREATE TABLE timeline_types (
+    id CHAR(36) PRIMARY KEY,
+    timeline_id CHAR(36) NOT NULL,
+    name VARCHAR2(70) NOT NULL,
+    order_num NUMBER(3) CHECK (order_num > 0),
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    CONSTRAINT fk_timeline_types_timeline FOREIGN KEY (timeline_id) REFERENCES timelines (id)
+);
+
